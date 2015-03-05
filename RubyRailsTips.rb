@@ -981,3 +981,47 @@ end.join.html_safe   #连接
 
 #TODO
 translations.detect { |t| t.locale == I18n.locale.to_s }.try(:postal_address_state_province)
+
+#TODO activesupport-4.1.1/lib/active_support/core_ext/*所有的扩展
+#TODO apply slice on hash to get needed attributes (activesupport-4.1.1/lib/active_support/core_ext/hash/slice.rb)
+#hash扩展，并不在ruby API中
+  # Slice a hash to include only the given keys. This is useful for
+  # limiting an options hash to valid keys before passing to a method:
+  #
+  #   def search(criteria = {})
+  #     assert_valid_keys(:mass, :velocity, :time)
+  #   end
+  #
+  #   search(options.slice(:mass, :velocity, :time))
+  #
+  # If you have an array of keys you want to limit to, you should splat them:
+  #
+  #   valid_keys = [:mass, :velocity, :time]
+  #   search(options.slice(*valid_keys))
+{"fax" => "fax"}.slice(*Organisation.accessible_attributes) #result=>{"fax" => "fax"}
+
+#TODO hash except is also a extension
+  # Return a hash that includes everything but the given keys. This is useful for
+  # limiting a set of parameters to everything but a few known toggles:
+  #
+  #   @person.update_attributes(params[:person].except(:admin))
+  #
+  # If the receiver responds to +convert_key+, the method is called on each of the
+  # arguments. This allows +except+ to play nice with hashes with indifferent access
+  # for instance:
+  #
+  #   {:a => 1}.with_indifferent_access.except(:a)  # => {}
+  #   {:a => 1}.with_indifferent_access.except("a") # => {}
+  #
+{"fax" => "fax", "telephone" => "telephone"}.except("fax") #result=>{"telephone" => "telephone"}}
+
+#TODO also a extension
+# Returns a new hash with +self+ and +other_hash+ merged recursively.
+  #
+  #   h1 = {:x => {:y => [4,5,6]}, :z => [7,8,9]}
+  #   h2 = {:x => {:y => [7,8,9]}, :z => "xyz"}
+  #
+  #   h1.deep_merge(h2) #=> { :x => {:y => [7, 8, 9]}, :z => "xyz" }
+  #   h2.deep_merge(h1) #=> { :x => {:y => [4, 5, 6]}, :z => [7, 8, 9] }
+
+
