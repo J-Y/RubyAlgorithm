@@ -882,6 +882,67 @@ end
 # 这个特性用在数组元算的选择上就显得非常巧妙
 
 
+# 有一个数组,包含16个数字。仅用each方法打印数组中的内容,一次打印4个数字。然后, 用可枚举模块的each_slice方法重做一遍
+# 我想问如何仅用each实现each_slice的功能
+# 1.
+    (1..16).to_a.each_with_index{|n,i|print"#{n}#{(i+1)%4==0?"\n":","}"}
+#Only use each here:
+# 2.
+    (array=(1..16).to_a).each{|n|print"#{n}#{(array.index(n)+1)%4==0?"\n":","}"}
+
+# 3.
+    module Enumerable
+def i_each_slice(n, &block)
+  raise "invalid slice size" if n <= 0
+
+  i, ary = 0, []
+
+  each do |a|
+    ary << a
+    i += 1
+    if i >= n
+      yield ary
+      i, ary = 0, []
+    end
+  end
+
+  yield ary if i > 0
+end
+end
+
+(1..10).i_each_slice(3) { |a| p a }
+
+# 输出
+# [1, 2, 3]
+# [4, 5, 6]
+# [7, 8, 9]
+# [10]
+
+# 4
+module Enumerable
+  def i_each_slice(n)
+    raise "invalid slice size" if n <= 0
+
+    result, i = [], 1
+
+    self.each do |ele|
+      index = (i / n.to_f).ceil
+      result[index].nil? ? result[index] = [ele] : result[index] << ele
+      i += 1
+    end
+
+    result[1..-1].each { |ele| yield ele }
+  end
+end
+
+['a', 'b', 'c', 'd', 'e', 1, 2, 3, 4, 5].i_each_slice(3) { |i| p i }
+# =>
+# ["a", "b", "c"]
+# ["d", "e", 1]
+# [2, 3, 4]
+# [5]
+
+
 #TODO Aha algorithm
 
 #TODO ruby quiz issues
