@@ -943,6 +943,26 @@ end
 # [5]
 
 
+#TODO array powerset集合的幂集，是集合的所有可能子集，包括空集和集合本身，存在2^n个子集
+class Array
+  def powerset
+    num = 2**size  #幂集的大小
+    ps = Array.new(num,[])
+    self.each_index do |i|
+      a=2**i
+      b=2**(i+1)-1
+      j=0
+      while j< num-1
+        for j in j+a..j+b
+          ps[j]+=[self[i]]
+        end
+        j+=1
+      end
+    end
+    ps
+  end
+end
+
 #TODO Aha algorithm
 
 #TODO ruby quiz issues

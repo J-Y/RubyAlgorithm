@@ -1023,5 +1023,39 @@ translations.detect { |t| t.locale == I18n.locale.to_s }.try(:postal_address_sta
   #
   #   h1.deep_merge(h2) #=> { :x => {:y => [7, 8, 9]}, :z => "xyz" }
   #   h2.deep_merge(h1) #=> { :x => {:y => [4, 5, 6]}, :z => [7, 8, 9] }
+#TODO  不同的赋值结果截然不同
+a=[1,2,3]  
+a[1..1]=[4,5]  #=> a=[1, 4, 5, 3]
+a[1] = [4,5]   #=> a=[1,[4,5],3]
+
+#TODO slice是[]的别名
+#TODO sort and sort_by
+
+files = files.sort {|x,y| File.size(x) <=> File.size(y)}
+files = files.sort_by {|x| Files.size(x)}#代码精简，不用重复执行代码，减少内存消耗
+#如果按照多个键排序
+list = list.sort_by{|x| [x.age,x.name,x.height]}
+
+#TODO 根据条件选择
+detect:返回满足条件的第一个元素
+find:是detect的同义词
+find_all:返回所有满足元素
+select:find_all同义词
+reject:与select相反
+grep方法调用关系运算符即case相等运算符将每个元素与指定模式匹配，由于是使用关系运算符===，模式不必是正则表达式
+a=%w(January March)
+a.grep(/ary/)  #["January"]
+b=[1,20,13]
+b.grep(12..24) #[20,13]
+
+c=%w(ab cd de)
+c.min #"ab"
+c.max #"de"
+c.min {|x,y| x.reverse <=> y.reverse} #"ab"
+c.max {|x,y| x.reverse <=> y.reverse} #"de"
+
+
+
+
 
 
